@@ -61,7 +61,7 @@ function init() {
 
 
 function viewRoles() {
-  db.query('SELECT * FROM role;',
+  db.query('SELECT role.title, role.id, role.salary, department.name AS department FROM role JOIN department ON role.department_id = department.id;',
     function (err, result) {
       if (err) throw err;
       console.table(result);
