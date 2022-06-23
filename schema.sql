@@ -32,5 +32,5 @@ SELECT * FROM employee;
 SELECT role.title, role.id, role.salary, department.name AS department FROM role
 JOIN department ON role.department_id = department.id;
 
-SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name, role.salary, employee.manager_id FROM employee, role
-JOIN department ON role.department_id = department.id; 
+SELECT employee.id, first_name, last_name, title, name AS department, salary, manager_id AS manager FROM employee
+INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON role.department_id = department.id;
