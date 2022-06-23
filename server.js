@@ -6,6 +6,8 @@ const PORT = process.env.PORT || 3001
 const mysql = require('mysql2');
 require('console.table');
 
+
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
@@ -49,6 +51,11 @@ function init() {
           viewEmployees()
 
         break;
+      case 'add a department':
+        return console.log('success'),
+          addDepartment()
+
+        break;
       default:
         break;
     }
@@ -71,7 +78,7 @@ function viewRoles() {
 }
 
 function viewEmployees() {
-  db.query('SELECT * FROM employee;',
+  db.query('SELECT employee.id, employee.first_name, employee.last_name, role.title, name AS department, salary, CONCAT(manager.first_name, " ", manager.last_name) AS manager FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON role.department_id = department.id LEFT JOIN employee manager on manager.id = employee.manager_id;',
     function (err, result) {
       if (err) throw err;
       console.table(result);
@@ -80,6 +87,34 @@ function viewEmployees() {
 
 }
 
+
+function addDepartment() {
+
+  db.query('SELECT COUNT(id) FROM department;'
+  function (err, result) {
+      if (err) throw err;
+      let departmentId = result + 1
+
+    }).then(
+
+      inquirer.prompt([
+        {
+          type: 'input',
+          name: 'name',
+          message: 'What is the name of the new department?',
+
+        }
+
+      ])).then((data) => {
+        departmentName = data
+      })
+  db.query(`INSERT INTO department (id, name) VALUES('${departmentId}', "${departmentName}"); `,
+    function (err, result) {
+      if (err) throw err;
+      console.table(result);
+      init();
+    })
+}
 
 
 function viewDepartments() {
