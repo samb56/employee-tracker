@@ -56,6 +56,11 @@ function init() {
           addDepartment()
 
         break;
+      case 'add a role':
+        return console.log('success'),
+          addRole()
+
+        break;
       default:
         break;
     }
@@ -90,30 +95,51 @@ function viewEmployees() {
 
 function addDepartment() {
 
-  db.query('SELECT COUNT(id) FROM department;'
-  function (err, result) {
-      if (err) throw err;
-      let departmentId = result + 1
 
-    }).then(
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'name',
+      message: 'What is the name of the new department?',
 
-      inquirer.prompt([
-        {
-          type: 'input',
-          name: 'name',
-          message: 'What is the name of the new department?',
+    }
 
-        }
-
-      ])).then((data) => {
-        departmentName = data
+  ]).then((data) => {
+    let departmentName = JSON.stringify(data.name)
+    db.query(`INSERT INTO department (name) VALUES('${departmentName}'); `,
+      function (err, result) {
+        if (err) throw err;
+        console.table(result);
+        init();
       })
-  db.query(`INSERT INTO department (id, name) VALUES('${departmentId}', "${departmentName}"); `,
-    function (err, result) {
-      if (err) throw err;
-      console.table(result);
-      init();
-    })
+  }
+  )
+}
+
+function addRole() {
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'name',
+      message: 'What is the name of the role?',
+
+    },
+    {
+      type: 'input',
+      name: 'salary',
+      message: 'What is the salary of the role?',
+    }
+
+  ]).then((data) => {
+    let departmentName = JSON.stringify(data.name)
+    db.query(`INSERT INTO department (name) VALUES('${departmentName}'); `,
+      function (err, result) {
+        if (err) throw err;
+        console.table(result);
+        init();
+      })
+  }
+  )
 }
 
 
