@@ -119,46 +119,50 @@ function addDepartment() {
 function addRole() {
   db.query('SELECT * FROM department;',
     function (err, result) {
+      
 
-      var currentDepartments = []
+
+      const currentDepartments = []
       for (let i = 0; i < result.length; i++) {
-        currentDepartments.push({ name: result[i].title, value: result[i].id })
+        currentDepartments.push({ name: result[i].name, value: result[i].id })
       }
+
+      inquirer.prompt([
+        {
+          type: 'input',
+          name: 'title',
+          message: 'What is the title of the role?',
+
+        },
+        {
+          type: 'input',
+          name: 'salary',
+          message: 'What is the salary of the role?',
+        },
+        {
+          type: 'list',
+          name: 'department',
+          message: 'what department is this role a part of?',
+          choices: currentDepartments,
+        }
+
+      ]).then((data) => {
+        console.log(data.department)
+        
+
+
+        let roleTitle = JSON.stringify(data.title)
+
+        let roleDepartment = JSON.stringify(data.department)
+        db.query(`INSERT INTO role (id, title, salary, department_id) VALUES('${result.length}', '${data.title}', '${data.salary}', '${data.department}'); `,
+          function (err, result) {
+            if (err) throw err;
+            console.table(result);
+            init();
+          })
+      }
+      )
     })
-  inquirer.prompt([
-    {
-      type: 'input',
-      name: 'title',
-      message: 'What is the title of the role?',
-
-    },
-    {
-      type: 'input',
-      name: 'salary',
-      message: 'What is the salary of the role?',
-    },
-    {
-      type: 'list',
-      name: 'department',
-      message: 'what department is this role a part of?',
-      choices: currentDepartments,
-    }
-
-  ]).then((data) => {
-    console.log(data.department)
-
-
-    let roleTitle = JSON.stringify(data.title)
-    let roleSalary = JSON.stringify(data.salary)
-    let roleDepartment = JSON.stringify(data.department)
-    db.query(`INSERT INTO role (title, salary, department_id) VALUES('${roleTitle}', '${roleSalary}', '${data.deppartment}'); `,
-      function (err, result) {
-        if (err) throw err;
-        console.table(result);
-        init();
-      })
-  }
-  )
 }
 
 
@@ -171,6 +175,18 @@ function viewDepartments() {
     })
 
 }
+
+function getRoleId() {
+  db.query('SELECT * FROM role;',
+    function (err, result) {
+      if (err) throw err;
+      console.log(result.legnth);
+      
+    })
+
+}
+
+
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

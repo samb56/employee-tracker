@@ -7,7 +7,7 @@ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 name VARCHAR(30)
 );
 CREATE TABLE role (
-id INT PRIMARY KEY NOT NULL,
+id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
 title VARCHAR(30),
 salary DECIMAL,
 department_id INT,
@@ -40,3 +40,4 @@ INNER JOIN department ON role.department_id = department.id
 LEFT JOIN employee manager on manager.id = employee.manager_id;
 
 SELECT * FROM role;
+SELECT * FROM department;
