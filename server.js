@@ -117,9 +117,10 @@ function addDepartment() {
 }
 
 function addRole() {
+
   db.query('SELECT * FROM department;',
     function (err, result) {
-      
+
 
 
       const currentDepartments = []
@@ -148,13 +149,13 @@ function addRole() {
 
       ]).then((data) => {
         console.log(data.department)
-        
 
 
-        let roleTitle = JSON.stringify(data.title)
+
+
 
         let roleDepartment = JSON.stringify(data.department)
-        db.query(`INSERT INTO role (id, title, salary, department_id) VALUES('${result.length}', '${data.title}', '${data.salary}', '${data.department}'); `,
+        db.query(`INSERT INTO role (title, salary, department_id) VALUES('${data.title}', '${data.salary}', '${data.department}'); `,
           function (err, result) {
             if (err) throw err;
             console.table(result);
@@ -181,7 +182,7 @@ function getRoleId() {
     function (err, result) {
       if (err) throw err;
       console.log(result.legnth);
-      
+
     })
 
 }
