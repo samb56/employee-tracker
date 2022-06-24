@@ -179,67 +179,66 @@ function addEmployee() {
     function (err, result) {
       if (err) throw err;
       for (let i = 0; i < result.length; i++) {
-        currentEmployees.push({ fname: result[i].first_name, lname: result[i].last_name, value: result[i].id })
+        currentEmployees.push({ name: `${result[i].first_name} ${result[i].last_name}`, value: result[i].id })
       }
+      currentEmployees.push({ name: 'No Manager', value: null })
 
-    })
+      
 
-  db.query('SELECT * FROM role;',
-    function (err, result) {
-
-
-
-      const currentRoles = []
-      for (let i = 0; i < result.length; i++) {
-        currentRoles.push({ name: result[i].name, value: result[i].id })
-      }
-      const currentEmployeesNames = currentEmployees.map({ fname, lname })
-      const currentRolesName = currentRoles.map({ name })
-
-
-      inquirer.prompt([
-        {
-          type: 'input',
-          name: 'first_name',
-          message: 'What is the first name of the employee?',
-
-        },
-        {
-          type: 'input',
-          name: 'last_name',
-          message: 'what is the last name of the employee?',
-        },
-        {
-          type: 'list',
-          name: 'role',
-          message: 'what is the role of the employee?',
-          choices: currentRolesName,
-        },
-        {
-          type: 'list',
-          name: 'manager',
-          message: 'who is the manager of the employee?',
-          choices: ["NULL", currentEmployeesNames],
-        }
-
-      ]).then((data) => {
-        console.log(data.role)
+      db.query('SELECT * FROM role;',
+        function (err, result) {
 
 
 
+          const currentRoles = []
+          for (let i = 0; i < result.length; i++) {
+            currentRoles.push({ name: result[i].title, value: result[i].id })
+          }
 
 
-        let roleDepartment = JSON.stringify(data.department)
-        db.query(`INSERT INTO employee (first_name, last_name, role, manager_id) VALUES('${data.first_name}', '${data.last_name}', '${data.role}', '${data.manager}'); `,
-          function (err, result) {
-            if (err) throw err;
-            console.table(result);
-            init();
+          
+
+
+          inquirer.prompt([
+            {
+              type: 'input',
+              name: 'first_name',
+              message: 'What is the first name of the employee?',
+
+            },
+            {
+              type: 'input',
+              name: 'last_name',
+              message: 'what is the last name of the employee?',
+            },
+            {
+              type: 'list',
+              name: 'role_id',
+              message: 'what is the role of the employee?',
+              choices: currentRoles,
+            },
+            {
+              type: 'list',
+              name: 'manager_id',
+              message: 'who is the manager of the employee?',
+              choices: currentEmployees,
+            }
+
+          ]).then((data) => {
+            
+            db.query(`INSERT INTO employee SET ?`, data,
+              function (err, result) {
+                if (err) throw err;
+                console.table(result);
+                init();
+              })
           })
-      }
-      )
-    })
+
+        })
+    }
+  )
 }
+
 
 function viewDepartments() {
   db.query('SELECT * FROM department;',
