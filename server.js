@@ -120,19 +120,24 @@ function addRole() {
   inquirer.prompt([
     {
       type: 'input',
-      name: 'name',
-      message: 'What is the name of the role?',
+      name: 'title',
+      message: 'What is the title of the role?',
 
     },
     {
       type: 'input',
       name: 'salary',
       message: 'What is the salary of the role?',
+    },
+    {
+      type: 'list',
+      name: 'department',
+      choices: []
     }
 
   ]).then((data) => {
     let departmentName = JSON.stringify(data.name)
-    db.query(`INSERT INTO department (name) VALUES('${departmentName}'); `,
+    db.query(`INSERT INTO role (title, salary, department_id) VALUES('${}'); `,
       function (err, result) {
         if (err) throw err;
         console.table(result);
