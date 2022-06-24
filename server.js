@@ -117,6 +117,14 @@ function addDepartment() {
 }
 
 function addRole() {
+  db.query('SELECT * FROM department;',
+    function (err, result) {
+
+      var currentDepartments = []
+      for (let i = 0; i < result.length; i++) {
+        currentDepartments.push({ name: result[i].title, value: result[i].id })
+      }
+    })
   inquirer.prompt([
     {
       type: 'input',
@@ -132,12 +140,18 @@ function addRole() {
     {
       type: 'list',
       name: 'department',
-      choices: []
+      message: 'what department is this role a part of?',
+      choices: currentDepartments,
     }
 
   ]).then((data) => {
-    let departmentName = JSON.stringify(data.name)
-    db.query(`INSERT INTO role (title, salary, department_id) VALUES('${}'); `,
+    console.log(data.department)
+
+
+    let roleTitle = JSON.stringify(data.title)
+    let roleSalary = JSON.stringify(data.salary)
+    let roleDepartment = JSON.stringify(data.department)
+    db.query(`INSERT INTO role (title, salary, department_id) VALUES('${roleTitle}', '${roleSalary}', '${data.deppartment}'); `,
       function (err, result) {
         if (err) throw err;
         console.table(result);
