@@ -66,6 +66,11 @@ function init() {
           addEmployee()
 
         break;
+      case 'update an employee role':
+        return console.log('success'),
+          updateEmployee()
+
+        break;
       default:
         break;
     }
@@ -183,7 +188,7 @@ function addEmployee() {
       }
       currentEmployees.push({ name: 'No Manager', value: null })
 
-      
+
 
       db.query('SELECT * FROM role;',
         function (err, result) {
@@ -196,7 +201,7 @@ function addEmployee() {
           }
 
 
-          
+
 
 
           inquirer.prompt([
@@ -225,7 +230,7 @@ function addEmployee() {
             }
 
           ]).then((data) => {
-            
+
             db.query(`INSERT INTO employee SET ?`, data,
               function (err, result) {
                 if (err) throw err;
@@ -238,6 +243,57 @@ function addEmployee() {
     }
   )
 }
+
+function updateEmployee() {
+  let currentEmployees = [];
+  db.query('SELECT * FROM employee;',
+    function (err, result) {
+      if (err) throw err;
+      for (let i = 0; i < result.length; i++) {
+        currentEmployees.push({ name: `${result[i].first_name} ${result[i].last_name}`, value: result[i].id })
+      }
+
+      db.query('SELECT * FROM role;',
+        function (err, result) {
+
+
+
+          const currentRoles = []
+          for (let i = 0; i < result.length; i++) {
+            currentRoles.push({ name: result[i].title, value: result[i].id })
+          }
+          inquirer.prompt([
+
+            {
+              type: 'list',
+              name: 'employee_id',
+              message: 'which employee would you like to update the role of?',
+              choices: currentEmployees,
+            },
+            {
+              type: 'list',
+              name: 'role_id',
+              message: 'what role would you like the employee to be updated to?',
+              choices: currentRoles,
+            }
+
+          ]).then((data) => {
+
+            db.query(`UPDATE employee SET role_id = ${data.role_id} WHERE id = ${data.employee_id};`, data,
+              function (err, result) {
+                if (err) throw err;
+                console.table(result);
+                init();
+              })
+
+          })
+        })
+    }
+
+  )
+}
+
+
 
 
 function viewDepartments() {
