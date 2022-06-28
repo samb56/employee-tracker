@@ -1,4 +1,4 @@
-# Employee Tracker [![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)
+# Employee Tracker 
   ## table of contents
   - [Description](#description)
   - [Installation](#installation)
@@ -17,9 +17,7 @@
   ## Usage 
   Once installed, use the command "node index.js" to begin the application prompt, displaying the options of application functions. The user uses the arrow keys to highlight the choice of interest and the  enter key to select the option. Selecting to view the data of interest will automatically print out the table of data requested and start over the initial list of options. When choosing to add any information to the database, the prompt will allow text input followed by the enter key to input data. When any task is completetd, the prompt will always be taken back to the initial menu.
 
-  ## License 
-  the unlicense :
-  A license with no conditions whatsoever which dedicates works to the public domain. Unlicensed works, modifications, and larger works may be distributed under different terms and without source code.
+  
 
   ## Contribution 
   Sam Bergeland
