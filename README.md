@@ -10,6 +10,7 @@
 
   ## Description 
   This applicaiton lets the user view, add to, or edit information from a database of saved employee data. Once the application is started, using the terminal commands, a database of employees can be created that keeps track of the role, salary, department, id nummber, and manager of the employee. 
+  [link to walkthrough video](https://youtu.be/rc02ttF7aPU)
 
   ## Installation 
   The installation process consists of downloading the zip file and extracting all of the included files. Then the user must use the terminal command "npm i" or a functional equivilant to install the necessary packages. Once installed, the data from the schedma.sql file should be used to construct the database within mySQL and following that, the data from seeds.sql can be used optionally to verify the information is showing as intended. Once set up, the use of "node server.js" within the terminal command line will start the prompt for options of application use.
